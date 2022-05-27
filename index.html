@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>Título da página</title>
+    <meta charset="utf-8">
+         <script type="module">
+          // Import the functions you need from the SDKs you need
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+          import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-analytics.js";
+          import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.7.0/firebase-auth.js"
+          import {getFirestore, doc, setDoc} from "https://www.gstatic.com/firebasejs/9.7.0/firebase-firestore.js";
+       
+          const firebaseConfig = {
+          apiKey: "AIzaSyDp3a2qyZxKhj_QZtf34cJHH1dMDNJrVrk",
+          authDomain: "tarefa03-a26a8.firebaseapp.com",
+          projectId: "tarefa03-a26a8",
+          storageBucket: "tarefa03-a26a8.appspot.com",
+          messagingSenderId: "628953318904",
+          appId: "1:628953318904:web:a4614df4c72441b0b6c20d"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+          const db = getFirestore(app);
+
+
+
+
+
+          //FUNCAO REGISTRO
+          window.criar_usuario = function(){
+          let email = window.document.getElementById("mail").value;
+          let password = window.document.getElementById("pass").value;
+          console.log(email);
+          console.log(password);
+
+          createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          // ...
+          console.log("Usuario criado");
+          })
+          .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+          console.log(errorMessage);
+          });
+          };
+
+
+
+          window.logar_usuario = function (){
+          let email = window.document.getElementById("mail").value;
+          let password = window.document.getElementById("pass").value;
+          console.log(email);
+          console.log(password);
+
+
+
+          signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          // ...
+          console.log("Usuário logado!");
+          console.log(user);
+          })
+          .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+          });
+          }
+
+
+
+
+          window.criar_dado = async function(){
+
+
+
+          let name1 = window.document.getElementById("nome").value;
+          let state1 = window.document.getElementById("estado").value;
+          let country1 = window.document.getElementById("pais").value;
+          let cont = window.document.getElementById("cont").value;
+
+
+
+
+          await setDoc(doc(db, "cities", cont), {
+          name: name1,
+          state: state1,
+          country: country1
+          });
+          alert("Salvo!")
+          }
+      </script>
+  </head>
+  <body>
+    <h1>pioséééééé</h1>
+      <label for="mail">Email</label>
+            <input type="email" id="mail">
+            <label for="pass">Senha</label>
+            <input type="password" id="pass">
+            <br/>
+            <br/>
+            <label for="name">Nome</label>
+            <input type="text" id="nome">
+            <label for="state">Estado</label>
+            <input type="text" id="estado">
+            <label for="country">Pais</label>
+            <input type="text" id="pais">
+            <label for="cont">continente</label>
+            <input type="text" id="cont">
+            <br/>
+            <br/>
+            <button type="button" onclick="window.criar_usuario();">Criar Usuário</button>
+            <button type="button" onclick="window.logar_usuario();">Logar Usuário</button>
+            <button type="button" onclick="window.criar_dado();">Salvar no Firestore</button>
+
+      </form>
+  </body>
+</html>
+
